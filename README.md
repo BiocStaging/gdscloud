@@ -22,7 +22,7 @@ BiocManager::install("gdscloud")
 ## System Requirements
 
 - libcurl >= 7.28.0
-- gdsfmt >= 1.49.1
+- gdsfmt >= 1.48.1
 - Windows source builds require Rtools and `LIB_CURL` to point to the curl
     toolchain path used by [src/Makevars.win](src/Makevars.win).
 
