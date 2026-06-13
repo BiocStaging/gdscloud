@@ -17,7 +17,8 @@ gdsCloudConfigHTTP(bearer_token=NULL, url=NULL)
         \code{"https://private.example.com/"}) to associate the given
         credentials with. When \code{NULL} (the default) the credentials
         are stored as the global defaults. Passing \code{url} with
-        \code{bearer_token=NULL} removes the entry for that prefix.}
+        \code{bearer_token=NULL} removes the entry for that prefix.
+        The scheme must be \code{http://} or \code{https://}.}
 }
 \details{
     If not set explicitly, the Bearer token falls back to the

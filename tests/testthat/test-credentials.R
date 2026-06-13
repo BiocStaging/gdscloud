@@ -144,6 +144,10 @@ test_that("all-NULL credential args with url removes the entry", {
 test_that("scheme mismatch in url errors", {
     .with_clean_url_creds({
         expect_error(
+            gdsCloudConfigHTTP(bearer_token = "t", url = "htp://x/"),
+            "http://|https://"
+        )
+        expect_error(
             gdsCloudConfigS3(aws_access_key_id = "k", url = "gs://x/"),
             "scheme"
         )

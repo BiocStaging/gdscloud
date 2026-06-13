@@ -23,6 +23,8 @@ BiocManager::install("gdscloud")
 
 - libcurl >= 7.28.0
 - gdsfmt >= 1.49.1
+- Windows source builds require Rtools and `LIB_CURL` to point to the curl
+    toolchain path used by [src/Makevars.win](src/Makevars.win).
 
 ## Maintainer
 
@@ -101,6 +103,7 @@ gdsCloudConfigHTTP(bearer_token = "your_token")
 
 # URL-specific token
 gdsCloudConfigHTTP(bearer_token = "other_token", url = "https://private.example.com/")
+# only http:// and https:// prefixes are accepted for `url`
 ```
 
 ### AWS S3

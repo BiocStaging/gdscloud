@@ -127,7 +127,13 @@ gdsCloudConfigHTTP <- function(bearer_token=NULL, url=NULL)
         if (!is.null(bearer_token))
             .gdscloud_env$http_bearer_token <- bearer_token
     } else {
-        .set_url_credentials(url, sub("://.*", "", url), list(
+        scheme <- sub("://.*", "", url)
+        if (!(scheme %in% c("http", "https")))
+        {
+            stop("'url' must start with 'http://' or 'https://'.",
+                call.=FALSE)
+        }
+        .set_url_credentials(url, scheme, list(
             http_bearer_token = bearer_token
         ))
     }
