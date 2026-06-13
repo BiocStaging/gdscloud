@@ -7,15 +7,13 @@
     Storage, or from any HTTP/HTTPS URL.
 }
 \usage{
-gdsCloudOpen(url, allow.error=FALSE)
+gdsCloudOpen(url)
 }
 \arguments{
     \item{url}{a character string specifying the cloud URL, e.g.,
         \code{"s3://bucket/key"}, \code{"gs://bucket/key"},
         \code{"az://container/blob"}, or
         \code{"https://example.com/path/to/file.gds"}}
-    \item{allow.error}{if \code{TRUE}, return the GDS file object even if
-        there are errors in the file structure}
 }
 \value{
     An object of class \code{gds.class}, identical to the return value

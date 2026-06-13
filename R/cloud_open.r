@@ -21,10 +21,9 @@
 #############################################################
 # Open a GDS file from a cloud URL
 #
-gdsCloudOpen <- function(url, allow.error=FALSE)
+gdsCloudOpen <- function(url)
 {
     stopifnot(is.character(url), length(url)==1L)
-    stopifnot(is.logical(allow.error), length(allow.error)==1L)
 
     # parse the URL scheme
     scheme <- sub("://.*", "", url)
@@ -34,11 +33,11 @@ gdsCloudOpen <- function(url, allow.error=FALSE)
 
     # dispatch to the appropriate backend
     ans <- switch(scheme,
-        "http"  = .open_http(url, allow.error),
-        "https" = .open_http(url, allow.error),
-        "s3"    = .open_s3(url, allow.error),
-        "gs"    = .open_gcs(url, allow.error),
-        "az"    = .open_azure(url, allow.error)
+        "http"  = .open_http(url),
+        "https" = .open_http(url),
+        "s3"    = .open_s3(url),
+        "gs"    = .open_gcs(url),
+        "az"    = .open_azure(url)
     )
 
     ans
@@ -63,7 +62,7 @@ gdsCloudSchemes <- function()
 #############################################################
 # Internal: open from HTTP/HTTPS
 #
-.open_http <- function(url, allow.error=FALSE)
+.open_http <- function(url, ...)
 {
     cred <- .get_http_credentials(url)
     cache_mb <- .gdscloud_env$cache_size_mb
@@ -79,7 +78,7 @@ gdsCloudSchemes <- function()
 #############################################################
 # Internal: open from S3
 #
-.open_s3 <- function(url, allow.error=FALSE)
+.open_s3 <- function(url, ...)
 {
     # get credentials (URL-specific entry takes priority)
     cred <- .get_s3_credentials(url)
@@ -94,7 +93,7 @@ gdsCloudSchemes <- function()
 #############################################################
 # Internal: open from GCS
 #
-.open_gcs <- function(url, allow.error=FALSE)
+.open_gcs <- function(url, ...)
 {
     cred <- .get_gcs_credentials(url)
     cache_mb <- .gdscloud_env$cache_size_mb
@@ -106,7 +105,7 @@ gdsCloudSchemes <- function()
 #############################################################
 # Internal: open from Azure
 #
-.open_azure <- function(url, allow.error=FALSE)
+.open_azure <- function(url, ...)
 {
     cred <- .get_azure_credentials(url)
     cache_mb <- .gdscloud_env$cache_size_mb

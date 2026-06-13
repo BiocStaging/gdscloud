@@ -11,7 +11,3 @@ test_that("gdsCloudOpen validates url argument", {
     expect_error(gdsCloudOpen(NULL))
 })
 
-test_that("gdsCloudOpen validates allow.error argument", {
-    expect_error(gdsCloudOpen("s3://bucket/key", allow.error="yes"))
-    expect_error(gdsCloudOpen("s3://bucket/key", allow.error=c(TRUE, FALSE)))
-})
