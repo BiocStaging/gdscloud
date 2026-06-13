@@ -16,7 +16,7 @@ LinkingTo: gdsfmt
 Suggests: BiocParallel, BiocStyle, knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 License: LGPL-3
-SystemRequirements: libcurl (>= 7.28.0)
+SystemRequirements: libcurl (>= 7.28.0), OpenSSL
 URL: https://github.com/zhengxwen/gdscloud
 BugReports: https://github.com/zhengxwen/gdscloud/issues
 biocViews: Infrastructure, DataImport

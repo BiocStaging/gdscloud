@@ -45,3 +45,24 @@
         }
     }
 }
+
+.onUnload <- function(libpath)
+{
+    # unregister cloud handlers from gdsfmt
+    if (requireNamespace("gdsfmt", quietly=TRUE))
+    {
+        unreg_fn <- tryCatch(
+            get(".gds_unregister_cloud_handler",
+                envir=asNamespace("gdsfmt"), inherits=FALSE),
+            error=function(e) NULL)
+        if (is.function(unreg_fn))
+        {
+            unreg_fn("s3")
+            unreg_fn("gs")
+            unreg_fn("az")
+            unreg_fn("http")
+            unreg_fn("https")
+        }
+    }
+    library.dynam.unload("gdscloud", libpath)
+}

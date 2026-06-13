@@ -239,6 +239,8 @@ static void http_close(void *backend_data)
 	if (http)
 	{
 		if (http->curl) curl_easy_cleanup(http->curl);
+		// zero out sensitive credential data before freeing
+		memset(http->auth_header, 0, sizeof(http->auth_header));
 		free(http);
 	}
 }

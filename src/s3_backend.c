@@ -500,6 +500,10 @@ static void s3_close(void *backend_data)
 	if (s3)
 	{
 		if (s3->curl) curl_easy_cleanup(s3->curl);
+		// zero out sensitive credential data before freeing
+		memset(s3->access_key, 0, sizeof(s3->access_key));
+		memset(s3->secret_key, 0, sizeof(s3->secret_key));
+		memset(s3->session_token, 0, sizeof(s3->session_token));
 		free(s3);
 	}
 }
