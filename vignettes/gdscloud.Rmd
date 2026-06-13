@@ -13,7 +13,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval=FALSE)
+knitr::opts_chunk$set(collapse=TRUE)
 ```
 
 
@@ -33,7 +33,7 @@ Supported backends:
 
 # Installation
 
-```{r install}
+```R
 if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
 BiocManager::install("gdscloud")
@@ -44,7 +44,7 @@ BiocManager::install("gdscloud")
 
 Once gdscloud is loaded, `openfn.gds()` from the gdsfmt package automatically recognizes cloud URLs and opens them transparently:
 
-```{r quickstart, eval=TRUE}
+```{r quickstart}
 library(gdscloud)
 
 # Open a GDS file from S3 — transparent via openfn.gds()
@@ -60,7 +60,7 @@ closefn.gds(gds)
 
 Alternatively, use the explicit function:
 
-```{r explicit}
+```{r explicit, eval=FALSE}
 gds <- gdsCloudOpen("s3://my-bucket/data/example.gds")
 closefn.gds(gds)
 ```
@@ -74,7 +74,7 @@ Each cloud backend requires credentials. Credentials can be set either via envir
 
 For public URLs (e.g., files hosted on a web server with Range request support), no credentials are needed:
 
-```{r open-http-public}
+```{r open-http-public, eval=FALSE}
 gds <- gdsCloudOpen("https://example.com/path/to/file.gds")
 closefn.gds(gds)
 ```
@@ -89,7 +89,7 @@ export GDSCLOUD_HTTP_TOKEN=your_bearer_token
 
 **R configuration:**
 
-```{r auth-http}
+```{r auth-http, eval=FALSE}
 gdsCloudConfigHTTP(bearer_token = "your_bearer_token")
 
 # URL-specific token for a private server
@@ -101,7 +101,7 @@ gdsCloudConfigHTTP(
 
 Then open:
 
-```{r open-http}
+```{r open-http, eval=FALSE}
 gds <- gdsCloudOpen("https://private.example.com/data/file.gds")
 closefn.gds(gds)
 ```
@@ -120,7 +120,7 @@ export AWS_SESSION_TOKEN=your_token
 
 **R configuration:**
 
-```{r auth-s3}
+```{r auth-s3, eval=FALSE}
 gdsCloudConfigS3(
     aws_access_key_id = "your_key",
     aws_secret_access_key = "your_secret",
@@ -130,7 +130,7 @@ gdsCloudConfigS3(
 
 Then open:
 
-```{r open-s3}
+```{r open-s3, eval=FALSE}
 gds <- gdsCloudOpen("s3://my-bucket/path/to/file.gds")
 # ... work with the file ...
 closefn.gds(gds)
@@ -146,13 +146,13 @@ export GCS_ACCESS_TOKEN=your_oauth2_token
 
 **R configuration:**
 
-```{r auth-gcs}
+```{r auth-gcs, eval=FALSE}
 gdsCloudConfigGCS(access_token = "your_oauth2_token")
 ```
 
 Then open:
 
-```{r open-gcs}
+```{r open-gcs, eval=FALSE}
 gds <- gdsCloudOpen("gs://my-bucket/path/to/file.gds")
 closefn.gds(gds)
 ```
@@ -170,7 +170,7 @@ export AZURE_STORAGE_SAS_TOKEN=your_sas_token
 
 **R configuration:**
 
-```{r auth-azure}
+```{r auth-azure, eval=FALSE}
 gdsCloudConfigAzure(
     account_name = "mystorageaccount",
     account_key = "base64encodedkey=="
@@ -184,7 +184,7 @@ gdsCloudConfigAzure(
 
 Then open:
 
-```{r open-azure}
+```{r open-azure, eval=FALSE}
 gds <- gdsCloudOpen("az://my-container/path/to/file.gds")
 closefn.gds(gds)
 ```
@@ -193,7 +193,7 @@ closefn.gds(gds)
 
 Sometimes different URLs need different credentials — for example, two S3 buckets owned by different accounts, or a mix of public and private resources. Each `gdsCloudConfig*()` function accepts an optional `url` argument that associates the supplied credentials with a URL prefix rather than the global defaults:
 
-```{r auth-url}
+```{r auth-url, eval=FALSE}
 # Different keys for two S3 buckets
 gdsCloudConfigS3(
     aws_access_key_id = "KEY_A",
@@ -230,7 +230,7 @@ The URL scheme passed via `url=` must match the function — `http://` or `https
 
 Cloud access uses an LRU block cache (1 MB blocks) to minimize HTTP requests. The default cache size is 64 MB per stream.
 
-```{r cache}
+```{r cache, eval=FALSE}
 # Set the default cache size for new streams (in MB)
 gdsCloudCacheSize(128)
 
@@ -253,7 +253,7 @@ Since gdscloud works transparently through `openfn.gds()`, packages built on gds
 
 **Note:** SeqArray >= v1.53.1 is recommended for full cloud support. This version allows `seqParallel()` to automatically load cloud-related packages on worker processes, so parallel operations on cloud-hosted GDS files work seamlessly.
 
-```{r seqarray}
+```{r seqarray, eval=FALSE}
 library(SeqArray)
 library(gdscloud)
 
@@ -311,10 +311,10 @@ No code changes are needed in downstream packages; loading gdscloud is sufficien
 
 # Session Information
 
-```{r pkg, eval=TRUE, echo=FALSE}
+```{r pkg, echo=FALSE}
 library(gdscloud, quietly=TRUE)
 ```
 
-```{r session, eval=TRUE}
+```{r session}
 sessionInfo()
 ```
