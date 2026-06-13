@@ -38,7 +38,6 @@ gdsCloudOpen(url)
     \code{\link[gdsfmt]{openfn.gds}}, \code{\link[gdsfmt]{closefn.gds}}
 }
 \examples{
-\dontrun{
 # Set AWS credentials
 gdsCloudConfigS3(
     aws_access_key_id = "AKIAIOSFODNN7EXAMPLE",
@@ -46,6 +45,7 @@ gdsCloudConfigS3(
     region = "us-east-1"
 )
 
+\dontrun{
 # Open from S3
 gds <- gdsCloudOpen("s3://my-bucket/data/example.gds")
 read.gdsn(index.gdsn(gds, "genotype"))

@@ -45,10 +45,10 @@ gdsCloudConfigHTTP(bearer_token=NULL, url=NULL)
     \code{\link{gdsCloudOpen}}, \code{\link{gdsCloudConfigS3}}
 }
 \examples{
-\dontrun{
 # Set a global Bearer token
 gdsCloudConfigHTTP(bearer_token = "my-secret-token")
 
+\dontrun{
 # Set a URL-specific token
 gdsCloudConfigHTTP(
     bearer_token = "token-for-private-server",

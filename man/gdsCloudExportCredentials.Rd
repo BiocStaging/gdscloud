@@ -58,7 +58,7 @@ library(SeqArray)
 gdsCloudConfigS3(aws_access_key_id="...", aws_secret_access_key="...")
 
 # create a PSOCK cluster and export credentials to the workers
-cl <- makeCluster(4)
+cl <- makeCluster(2L)
 gdsCloudExportCredentials(cl)
 
 # run a parallel analysis on a cloud-hosted GDS file

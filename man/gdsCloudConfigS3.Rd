@@ -67,7 +67,6 @@ gdsCloudConfigAzure(account_name=NULL, account_key=NULL, sas_token=NULL,
     \code{\link{gdsCloudOpen}}
 }
 \examples{
-\dontrun{
 # AWS S3
 gdsCloudConfigS3(
     aws_access_key_id = "your_key",
@@ -84,6 +83,7 @@ gdsCloudConfigAzure(
     account_key = "base64encodedkey=="
 )
 
+\dontrun{
 # URL-specific credentials: different keys for different buckets
 gdsCloudConfigS3(
     aws_access_key_id = "KEY_A",
