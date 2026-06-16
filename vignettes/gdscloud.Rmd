@@ -40,6 +40,16 @@ BiocManager::install("gdscloud")
 ```
 
 
+# Supported URL Schemes
+
+gdscloud recognizes the following URL schemes:
+
+```{r schemes}
+library(gdscloud)
+gdsCloudSchemes()
+```
+
+
 # Quick Start
 
 Once gdscloud is loaded, `openfn.gds()` from the gdsfmt package automatically recognizes cloud URLs and opens them transparently:
@@ -89,7 +99,7 @@ export GDSCLOUD_HTTP_TOKEN=your_bearer_token
 
 **R configuration:**
 
-```{r auth-http, eval=FALSE}
+```{r auth-http}
 gdsCloudConfigHTTP(bearer_token = "your_bearer_token")
 
 # URL-specific token for a private server
@@ -120,7 +130,7 @@ export AWS_SESSION_TOKEN=your_token
 
 **R configuration:**
 
-```{r auth-s3, eval=FALSE}
+```{r auth-s3}
 gdsCloudConfigS3(
     aws_access_key_id = "your_key",
     aws_secret_access_key = "your_secret",
@@ -146,7 +156,7 @@ export GCS_ACCESS_TOKEN=your_oauth2_token
 
 **R configuration:**
 
-```{r auth-gcs, eval=FALSE}
+```{r auth-gcs}
 gdsCloudConfigGCS(access_token = "your_oauth2_token")
 ```
 
@@ -170,7 +180,7 @@ export AZURE_STORAGE_SAS_TOKEN=your_sas_token
 
 **R configuration:**
 
-```{r auth-azure, eval=FALSE}
+```{r auth-azure}
 gdsCloudConfigAzure(
     account_name = "mystorageaccount",
     account_key = "base64encodedkey=="
@@ -193,7 +203,7 @@ closefn.gds(gds)
 
 Sometimes different URLs need different credentials — for example, two S3 buckets owned by different accounts, or a mix of public and private resources. Each `gdsCloudConfig*()` function accepts an optional `url` argument that associates the supplied credentials with a URL prefix rather than the global defaults:
 
-```{r auth-url, eval=FALSE}
+```{r auth-url}
 # Different keys for two S3 buckets
 gdsCloudConfigS3(
     aws_access_key_id = "KEY_A",
@@ -230,7 +240,7 @@ The URL scheme passed via `url=` must match the function — `http://` or `https
 
 Cloud access uses an LRU block cache (1 MB blocks) to minimize HTTP requests. The default cache size is 64 MB per stream.
 
-```{r cache, eval=FALSE}
+```{r cache}
 # Set the default cache size for new streams (in MB)
 gdsCloudCacheSize(128)
 

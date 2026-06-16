@@ -35,7 +35,7 @@ typedef struct AzureBackendData {
 	char sas_token[CLOUD_MAX_CRED_LEN];
 	char container[512];
 	char blob_name[CLOUD_MAX_URL_LEN];
-	char endpoint[CLOUD_MAX_URL_LEN];
+	char endpoint[CLOUD_MAX_ENDPOINT_LEN];
 	CURL *curl;
 	char last_error[CLOUD_MAX_ERROR_LEN];
 } AzureBackendData;
@@ -146,7 +146,7 @@ static int base64_encode(const unsigned char *input, size_t input_len,
 	bio = BIO_push(b64, bio);
 	BIO_set_flags(bio, BIO_FLAGS_BASE64_NO_NL);
 	BIO_write(bio, input, (int)input_len);
-	BIO_flush(bio);
+	(void)BIO_flush(bio);
 	BIO_get_mem_ptr(bio, &bptr);
 	if (bptr->length < out_size)
 	{
@@ -242,8 +242,9 @@ static long long azure_read_range(void *backend_data, const char *url,
 	snprintf(range_str, sizeof(range_str), "bytes=%lld-%lld",
 		offset, offset + length - 1);
 
-	char url_str[CLOUD_MAX_URL_LEN];
+	char url_str[CLOUD_MAX_ENDPOINT_LEN + CLOUD_MAX_CRED_LEN + 16];
 	strncpy(url_str, az->endpoint, sizeof(url_str) - 1);
+	url_str[sizeof(url_str) - 1] = '\0';
 
 	// SAS token or Shared Key
 	if (az->sas_token[0])
@@ -253,14 +254,14 @@ static long long azure_read_range(void *backend_data, const char *url,
 		snprintf(url_str, sizeof(url_str), "%s%c%s",
 			az->endpoint, sep, az->sas_token);
 
-		char range_hdr[128];
+		char range_hdr[160];
 		snprintf(range_hdr, sizeof(range_hdr), "Range: %s", range_str);
 		headers = curl_slist_append(headers, range_hdr);
 	}
 	else if (az->account_key[0])
 	{
 		char auth_hdr[2048], date_hdr[128];
-		char resource_path[CLOUD_MAX_URL_LEN];
+		char resource_path[CLOUD_MAX_ENDPOINT_LEN];
 		snprintf(resource_path, sizeof(resource_path),
 			"/%s/%s", az->container, az->blob_name);
 		azure_sign_request(az, "GET", resource_path, range_str,
@@ -269,7 +270,7 @@ static long long azure_read_range(void *backend_data, const char *url,
 		headers = curl_slist_append(headers, date_hdr);
 		headers = curl_slist_append(headers, "x-ms-version: 2020-10-02");
 
-		char range_hdr[128];
+		char range_hdr[160];
 		snprintf(range_hdr, sizeof(range_hdr), "Range: %s", range_str);
 		headers = curl_slist_append(headers, range_hdr);
 	}
@@ -329,8 +330,9 @@ static long long azure_get_size(void *backend_data, const char *url)
 
 	struct curl_slist *headers = NULL;
 
-	char url_str[CLOUD_MAX_URL_LEN];
+	char url_str[CLOUD_MAX_ENDPOINT_LEN + CLOUD_MAX_CRED_LEN + 16];
 	strncpy(url_str, az->endpoint, sizeof(url_str) - 1);
+	url_str[sizeof(url_str) - 1] = '\0';
 
 	if (az->sas_token[0])
 	{
@@ -341,7 +343,7 @@ static long long azure_get_size(void *backend_data, const char *url)
 	else if (az->account_key[0])
 	{
 		char auth_hdr[2048], date_hdr[128];
-		char resource_path[CLOUD_MAX_URL_LEN];
+		char resource_path[CLOUD_MAX_ENDPOINT_LEN];
 		snprintf(resource_path, sizeof(resource_path),
 			"/%s/%s", az->container, az->blob_name);
 		// sign as GET with Range: bytes=0-0 (must match the actual request)
